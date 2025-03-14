@@ -31,7 +31,7 @@ public class Repository<T> : IRepository<T> where T : class
         return entity;
     }
 
-    public T Upadte(T entity)
+    public T Update(T entity)
     {
         // _context.Set<T>().Update(entity); // -> retorna sql alterando todos os atreibutos da entidade. usado para atualizações completa
         _context.Entry(entity).State = EntityState.Modified; // retorna um sql que faz a alteração somente dos atributos que tem alterações na entidade

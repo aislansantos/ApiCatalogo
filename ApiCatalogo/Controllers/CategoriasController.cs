@@ -1,8 +1,6 @@
 ﻿using ApiCatalogo.Interfaces.Repositories;
 using ApiCatalogo.Models;
-using APICatalogo.Context;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ApiCatalogo.Controllers;
 
@@ -10,8 +8,7 @@ namespace ApiCatalogo.Controllers;
 [ApiController]
 public class CategoriasController : ControllerBase
 {
-    private readonly ICategoriaRepository _repository;
-    private readonly IConfiguration _configuration;
+    private readonly IRepository<Categoria> _repository;
     private readonly ILogger _logger;
 
     public CategoriasController(ICategoriaRepository repository,
@@ -19,21 +16,20 @@ public class CategoriasController : ControllerBase
                                 ILogger<CategoriasController> logger)
     {
         _repository = repository;
-        _configuration = configuration;
         _logger = logger;
     }
 
     [HttpGet]
     public ActionResult<IEnumerable<Categoria>> Get()
     {
-        var categorias = _repository.GetCategorias();
+        var categorias = _repository.GetAll();
         return Ok(categorias);
     }
 
     [HttpGet("{id:int}", Name = "ObterCategoria")]
     public ActionResult<Categoria> Get(int id)
     {
-        var categoria = _repository.GetCategoria(id);
+        var categoria = _repository.Get(c => c.CategoriaId == id);
 
         if (categoria == null)
         {
@@ -75,7 +71,7 @@ public class CategoriasController : ControllerBase
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
-        var categoria = _repository.GetCategoria(id);
+        var categoria = _repository.Get(c => c.CategoriaId == id);
 
         if (categoria == null)
         {
@@ -83,9 +79,8 @@ public class CategoriasController : ControllerBase
             return NotFound($"Categoria com id={id} não encontrada...");
         }
 
-        var categoriaExcluida = _repository.Delete(id);
+        var categoriaExcluida = _repository.Delete(categoria);
 
-        return Ok(categoriaExcluida
-            );
+        return Ok(categoriaExcluida);
     }
 }
