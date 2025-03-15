@@ -11,11 +11,11 @@ public class ProdutosController : ControllerBase
     private readonly IProdutoRepository _produtoRepositorio;
 
     //private readonly IRepository<Produto> _repository;
-    private readonly ILogger _logger;
+    ILogger<ProdutosController> _logger;
 
     public ProdutosController(IProdutoRepository produtoRepositorio,
-                              //IRepository<Produto> repository,
-                              ILogger logger)
+                               //IRepository<Produto> repository,
+                               ILogger<ProdutosController> logger)
     {
         _produtoRepositorio = produtoRepositorio;
         //_repository = repository;

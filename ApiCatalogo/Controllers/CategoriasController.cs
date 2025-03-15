@@ -9,7 +9,7 @@ namespace ApiCatalogo.Controllers;
 public class CategoriasController : ControllerBase
 {
     private readonly IRepository<Categoria> _repository;
-    private readonly ILogger _logger;
+    private readonly ILogger<CategoriasController> _logger;
 
     public CategoriasController(ICategoriaRepository repository,
                                 IConfiguration configuration,
