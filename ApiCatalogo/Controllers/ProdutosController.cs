@@ -1,3 +1,4 @@
+using ApiCatalogo.DTOs;
 using ApiCatalogo.Interfaces.Repositories;
 using ApiCatalogo.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public class ProdutosController : ControllerBase
 
     // Método do repositório especifico
     [HttpGet("produtos/{id}")]
-    public ActionResult<IEnumerable<Produto>> GetProdutosCategorias(int id)
+    public ActionResult<IEnumerable<ProdutoDTO>> GetProdutosCategorias(int id)
     {
         var produtos = _uof.ProdutoRepository.GetProdutosPorCategorias(id);
         if (produtos is null)
@@ -31,7 +32,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Produto>> GetProdutos()
+    public ActionResult<IEnumerable<ProdutoDTO>> GetProdutos()
     {
         var produtos = _uof.ProdutoRepository.GetAll();
         if (produtos is null)
@@ -41,7 +42,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpGet("{id:int}", Name = "ObterProduto")]
-    public ActionResult<Produto> Get(int id)
+    public ActionResult<ProdutoDTO> Get(int id)
     {
         var produto = _uof.ProdutoRepository.Get(p => p.ProdutoId == id);
         if (produto is null)
@@ -54,9 +55,9 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Post(Produto? produto)
+    public ActionResult<ProdutoDTO> Post(ProdutoDTO? produtoDto)
     {
-        if (produto is null)
+        if (produtoDto is null)
         {
             _logger.LogWarning("Daos inválidos...");
             return BadRequest("Dados inválidos...");
@@ -66,13 +67,13 @@ public class ProdutosController : ControllerBase
         _uof.Commit();
 
         return new CreatedAtRouteResult("ObterProduto",
-            new { id = produto.ProdutoId }, produto);
+            new { id = produtoCriado.ProdutoId }, produtoCriado);
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult Put(int id, Produto produto)
+    public ActionResult<ProdutoDTO> Put(int id, ProdutoDTO produtoDto)
     {
-        if (id != produto.ProdutoId)
+        if (id != ProdutoDTO.ProdutoId)
             return BadRequest();//400
 
         var produtoAtualizado = _uof.ProdutoRepository.Update(produto);
@@ -82,7 +83,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public ActionResult Delete(int id)
+    public ActionResult<ProdutoDTO> Delete(int id)
     {
         var produto = _uof.ProdutoRepository.Get(p => p.ProdutoId == id);
 

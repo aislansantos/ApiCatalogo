@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using ApiCatalogo.DTOs;
+using ApiCatalogo.DTOs.Mappings;
 using ApiCatalogo.Filters;
 using ApiCatalogo.Interfaces.Repositories;
 using ApiCatalogo.Logging;
@@ -39,6 +41,9 @@ builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderCon
 {
     LogLevel = LogLevel.Information,
 }));
+
+// Injeção de dependencia para informar para o autoMapper quais os perfis de mapeamento.
+builder.Services.AddAutoMapper(typeof(ProdutoDTOMappingProfile));
 
 var app = builder.Build();
 
