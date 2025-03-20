@@ -44,6 +44,7 @@ builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderCon
 
 // Injeção de dependencia para informar para o autoMapper quais os perfis de mapeamento.
 builder.Services.AddAutoMapper(typeof(ProdutoDTOMappingProfile));
+//builder.Services.AddAutoMapper(typeof(program)); -> pode-se usar desta forma ja que o program é o assenbly principal do programa.
 
 var app = builder.Build();
 
