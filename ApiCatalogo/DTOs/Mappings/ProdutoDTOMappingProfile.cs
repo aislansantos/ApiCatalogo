@@ -10,6 +10,8 @@ namespace ApiCatalogo.DTOs.Mappings
             // Dessa forma usando o ReverseMap ele vai estar fazendo o mapeamento de produto -> produtoDTo e de ProdutoDTO para produto;
             CreateMap<Produto, ProdutoDTO>().ReverseMap();
             CreateMap<Categoria, CategoriaDTO>().ReverseMap();
+            CreateMap<Produto, ProdutoDTOUpdateRequest>().ReverseMap();
+            CreateMap<Produto, ProdutoDTOUpdateResponse>().ReverseMap();
         }
     }
 }
