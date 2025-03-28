@@ -1,9 +1,11 @@
 using ApiCatalogo.DTOs;
 using ApiCatalogo.Interfaces.Repositories;
 using ApiCatalogo.Models;
+using ApiCatalogo.Pagination;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace APICatalogo.Controllers;
 
@@ -49,6 +51,29 @@ public class ProdutosController : ControllerBase
         var produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
 
         return Ok(produtosDTO);
+    }
+
+    [HttpGet("pagination")]
+    public ActionResult<IEnumerable<ProdutoDTO>> Get([FromQuery] ProdutosParameters
+                                                                 produtosParameters)
+    {
+        var produtos = _uof.ProdutoRepository.GetProdutos(produtosParameters);
+
+        var metadata = new
+        {
+            produtos.TotalCount,
+            produtos.PageSize,
+            produtos.CurrentPage,
+            produtos.TotalPages,
+            produtos.HasNext,
+            produtos.HasPrevious,
+        };
+
+        Response.Headers.Append("XPagination", JsonConvert.SerializeObject(metadata));
+
+        var produtoDtos = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
+
+        return Ok(produtoDtos);
     }
 
     [HttpGet("{id:int}", Name = "ObterProduto")]
