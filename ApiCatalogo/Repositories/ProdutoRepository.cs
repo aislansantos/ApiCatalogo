@@ -23,7 +23,8 @@ public class ProdutoRepository : Repository<Produto>, IProdutoRepository
     public PagedList<Produto> GetProdutos(ProdutosParameters produtosParams)
     {
         var produtos = GetAll().OrderBy(p => p.ProdutoId).AsQueryable();
-        var produtosOrdenados = PagedList<Produto>.ToPagedList(produtos, produtosParams.PageNumber, produtosParams.PageSize);
+        var produtosOrdenados = PagedList<Produto>.ToPagedList(produtos,
+                produtosParams.PageNumber, produtosParams.PageSize);
 
         return produtosOrdenados;
     }
